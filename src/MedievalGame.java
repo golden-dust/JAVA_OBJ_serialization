@@ -49,7 +49,6 @@ public class MedievalGame {
 
   /* Instance Methods */
   private Player start(Scanner console) {
-    // Add start functionality here
     Player player;
     Art.homeScreen();
     
@@ -57,14 +56,35 @@ public class MedievalGame {
     System.out.println("Tell me traveler, have you been here before?");
     System.out.print("   Enter 'y' to load a game, 'n' to create a new game: ");
     String answer = console.next().toLowerCase();
-    if (answer.equals("y")) {
-    	
-    } else if (answer.equals("n")) {
-    	
-    } else {
-    	
-    }
-    
+    while (true) {
+		if (answer.equals("y")) {
+			addDelay(500);
+			player = load(console.next(), console);
+			System.out.print("\nnAhh... I knew I remembered you, what was your name again? Let me see if I can find your backpack: ");
+			break;
+		} else if (answer.equals("n")) {
+			addDelay(500);
+			System.out.print("\nWell then, don't be shy, go ahead and tell me your name: ");
+			String possibleName = console.next();
+			while (true) {
+				addDelay(500);
+				System.out.println("Welcome " + possibleName + ", am I pronouncing that correctly? (Enter 'y' to confirm, 'n' to enter a new name");
+				String nameResponse = console.next();
+				if (nameResponse.equals("y")) {
+					player = new Player(possibleName);
+					break;
+				} else {
+					addDelay(500);
+					System.out.println("So sorry, can you spell it for me again?");
+					possibleName = console.next();
+				}
+			}
+		} else {
+			addDelay(500);
+			System.out.print("Sorry adventurer, I only speak the common tongue. Please enter 'y' to load a game or 'n' to start a new game: ");
+		    answer = console.next().toLowerCase();
+		}
+  	}
     return player;
   } // End of start
 
