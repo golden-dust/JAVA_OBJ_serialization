@@ -56,23 +56,26 @@ public class MedievalGame {
     System.out.println("Tell me traveler, have you been here before?");
     System.out.print("   Enter 'y' to load a game, 'n' to create a new game: ");
     String answer = console.next().toLowerCase();
+    boolean loop = true;
     while (true) {
 		if (answer.equals("y")) {
 			addDelay(500);
 			player = load(console.next(), console);
 			System.out.print("\nnAhh... I knew I remembered you, what was your name again? Let me see if I can find your backpack: ");
-			break;
+			loop = false;
+			return player;
 		} else if (answer.equals("n")) {
 			addDelay(500);
 			System.out.print("\nWell then, don't be shy, go ahead and tell me your name: ");
 			String possibleName = console.next();
-			while (true) {
+			while (loop) {
 				addDelay(500);
 				System.out.println("Welcome " + possibleName + ", am I pronouncing that correctly? (Enter 'y' to confirm, 'n' to enter a new name");
 				String nameResponse = console.next();
 				if (nameResponse.equals("y")) {
 					player = new Player(possibleName);
-					break;
+					loop = false;
+					return player;
 				} else {
 					addDelay(500);
 					System.out.println("So sorry, can you spell it for me again?");
@@ -85,7 +88,6 @@ public class MedievalGame {
 		    answer = console.next().toLowerCase();
 		}
   	}
-    return player;
   } // End of start
 
   private void save () {
@@ -107,6 +109,7 @@ public class MedievalGame {
         FileInputStream userSaveFile = new FileInputStream(playerName + ".svr");
         ObjectInputStream playerLoader = new ObjectInputStream(userSaveFile);
         loadedPlayer = (Player) playerLoader.readObject();
+        playerLoader.close();
       } catch (IOException | ClassNotFoundException e) {
         addDelay(1500);
         System.out.println("\nThere was a problem loading your character, we've created a new player with the name you entered.");
